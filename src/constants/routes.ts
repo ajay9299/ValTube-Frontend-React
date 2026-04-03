@@ -2,5 +2,6 @@ export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  DASHBOARD: '/dashboard'
+  DASHBOARD: '/dashboard',
+  UPLOAD_VIDEO: '/upload-video'
 } as const

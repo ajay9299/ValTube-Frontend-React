@@ -1,4 +1,4 @@
-import React, { lazy } from 'react'
+import { lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../modules/auth/AuthContext'
 import { ROUTES } from '../constants/routes'
@@ -8,6 +8,7 @@ const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Login = lazy(() => import('../modules/auth/pages/Login'))
 const Register = lazy(() => import('../modules/auth/pages/Register'))
 const NotFound = lazy(() => import('../pages/NotFound'))
+const UploadVideo = lazy(() => import('../modules/video/pages/UploadVideo'))
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { user } = useAuth()
@@ -21,6 +22,7 @@ export default function AppRoutes() {
       <Route path={ROUTES.HOME} element={<Home />} />
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTER} element={<Register />} />
+      <Route path={ROUTES.UPLOAD_VIDEO} element={<UploadVideo />} />
       <Route
         path={ROUTES.DASHBOARD}
         element={
