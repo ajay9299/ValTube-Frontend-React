@@ -1,12 +1,9 @@
 
-
 export default function UploadVideo() {
-
-    console.log("Rendering UploadVideo component");
     return (
-        <div>
-            <h1>Upload Video</h1>
-            {/* Upload form goes here */}
+        <div style={{ padding: '20px', background: 'red' }}>
+            <h1>Upload Video Component</h1>
+            <p>This is a test to see if the component renders</p>
         </div>
     )
 }

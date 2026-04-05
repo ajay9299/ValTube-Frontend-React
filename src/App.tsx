@@ -21,7 +21,7 @@ export default function App() {
           <AppRoutes />
         </Suspense>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
