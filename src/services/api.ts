@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE =
-  (import.meta.env.VITE_API_BASE as string) || "http://localhost:4000/api";
+  (import.meta.env.VITE_API_BASE as string) || "http://localhost:3002";
 
 console.log("API_BASE:", API_BASE);
 

@@ -1,9 +1,37 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAuth } from "../modules/auth/AuthContext";
+import { getMultiPartUploadKey } from "../modules/video/videoService";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
+
+
+  const fileInputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    // Programmatically click the hidden file input
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (event:any) => {
+    const file = event.target.files[0];
+
+    const data = await getMultiPartUploadKey({fileName: file.name, mimeType: file.type})
+
+    console.log("Received upload key data:", data);
+
+    const chunkSize = 5 * 1024 * 1024; // 5MB
+    const totalChunks = Math.ceil(file.size / chunkSize);
+    console.log("Total chunks:", totalChunks);
+
+    for (let i = 0; i < totalChunks; i++) {
+      const start = i * chunkSize;
+      const end = Math.min(start + chunkSize, file.size);
+      const chunk = file.slice(start, end);
+    }
+
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -186,9 +214,15 @@ export default function Dashboard() {
                   <p className="text-gray-500">
                     No videos uploaded yet. Start by uploading your first video!
                   </p>
-                  <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                  <button onClick={handleButtonClick} className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                     Upload Video
                   </button>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
                 </div>
               </div>
             )}

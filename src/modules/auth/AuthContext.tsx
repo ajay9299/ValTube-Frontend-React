@@ -18,22 +18,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    async function init() {
-      try {
-        const me = await authService.fetchProfile();
-        setUser(me);
-      } catch (e) {
-        setUser(null);
-      }
-    }
-    init();
-  }, []);
+  // useEffect(() => {
+  //   async function init() {
+  //     try {
+  //       const me = await authService.fetchProfile();
+  //       setUser(me);
+  //     } catch (e) {
+  //       setUser(null);
+  //     }
+  //   }
+  //   init();
+  // }, []);
 
   async function login(payload: { email: string; password: string }) {
-    const data = await authService.login(payload);
-    if (data?.token) {
-      localStorage.setItem("token", data.token);
+    const loginData = {username: payload.email, password: payload.password} 
+    const data = await authService.login(loginData);
+    if (data?.access_token) {
+      localStorage.setItem("access_token", data.access_token);
       const me = await authService.fetchProfile();
       setUser(me);
     }
