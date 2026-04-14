@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../modules/auth/AuthContext";
-import { getMultiPartUploadKey } from "../modules/video/videoService";
+import { completeMultiPartUpload, getMultiPartUploadKey, getSignedUploadUrl } from "../modules/video/videoService";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -17,19 +17,66 @@ export default function Dashboard() {
   const handleFileChange = async (event:any) => {
     const file = event.target.files[0];
 
-    const data = await getMultiPartUploadKey({fileName: file.name, mimeType: file.type})
+    console.log("Selected file:", file);
 
-    console.log("Received upload key data:", data);
+    // Below code is not woeking and app is not logging above log after uncommenting below code
 
-    const chunkSize = 5 * 1024 * 1024; // 5MB
-    const totalChunks = Math.ceil(file.size / chunkSize);
-    console.log("Total chunks:", totalChunks);
+    // const data = await getMultiPartUploadKey({fileName: file.name, mimeType: file.type})
 
-    for (let i = 0; i < totalChunks; i++) {
-      const start = i * chunkSize;
-      const end = Math.min(start + chunkSize, file.size);
-      const chunk = file.slice(start, end);
-    }
+    // console.log("Received upload key data:", data);
+
+    // const chunkSize = 5 * 1024 * 1024; // 5MB
+    // const totalChunks = Math.ceil(file.size / chunkSize);
+    // console.log("Total chunks:", totalChunks);
+
+    // const parts = [];
+
+    // for (let i = 0; i < totalChunks; i++) {
+    //   const partNumber = i + 1;
+    //   const start = i * chunkSize;
+    //   const end = Math.min(start + chunkSize, file.size);
+    //   const chunk = file.slice(start, end);
+
+    //   try {
+    //     console.log(`Uploading chunk ${i + 1}/${totalChunks}...`);
+    //     const res = await getSignedUploadUrl({key: data.key, uploadId: data.uploadId, partNumber: i + 1})
+    //     console.log(`Received signed URL for chunk ${i + 1}:`, res);
+
+    //     const uploadRes = await fetch(res.signedUrl, {
+    //       method: 'PUT',
+    //       headers: {
+    //         'Content-Type': file.type
+    //       },
+    //       body: chunk
+    //     });
+
+    //     console.log(`Upload response for chunk ${i + 1}:`, uploadRes);
+
+    //     const etag = uploadRes.headers.get("ETag");
+
+    //     console.log(`ETag for chunk ${i + 1}:`, etag, `PartNumber: ${partNumber}`);
+
+    //     parts.push({
+    //       ETag: etag,
+    //       PartNumber: partNumber,
+    //     });
+
+    //     if (!res.ok) {
+    //       throw new Error(`Failed to upload chunk ${i + 1}`);
+    //     }
+    //   } catch (error) {
+    //     console.error(`Error uploading chunk ${i + 1}:`, error);
+    //     return;
+    //   }
+
+    //   const allPartsUploaded = await completeMultiPartUpload({
+    //     key: data.key,
+    //     uploadId: data.uploadId,
+    //     parts: parts
+    //   })
+
+    //   console.log("All parts uploaded, completing upload:", allPartsUploaded);
+    // }
 
   };
 

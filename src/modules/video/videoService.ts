@@ -10,7 +10,7 @@ export async function getSignedUploadUrl(payload: {key: string, uploadId: string
   return res.data
 }
 
-export async function completeMultiPartUpload(payload: {key: string, uploadId: string, parts: Array<{ETag: string, PartNumber: number}>}) {
+export async function completeMultiPartUpload(payload: {key: string, uploadId: string, parts: Array<{ETag: string | null, PartNumber: number}>}) {
   const res = await api.post('/video/complete-upload', payload)
   return res.data
 }
