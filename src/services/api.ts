@@ -15,7 +15,7 @@ const api = axios.create({
 // request interceptor to attach token
 api.interceptors.request.use((config) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,7 +30,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
+      localStorage.removeItem("access_token");
       window.location.href = "/login";
     }
     return Promise.reject(error);
