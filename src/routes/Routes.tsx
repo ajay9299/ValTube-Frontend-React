@@ -1,19 +1,33 @@
-import { lazy } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from '../modules/auth/AuthContext'
-import { ROUTES } from '../constants/routes'
+import { lazy } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "../modules/auth/AuthContext";
+import { ROUTES } from "../constants/routes";
 
-const Home = lazy(() => import('../pages/Home'))
-const Dashboard = lazy(() => import('../pages/Dashboard'))
-const Login = lazy(() => import('../modules/auth/pages/Login'))
-const Register = lazy(() => import('../modules/auth/pages/Register'))
-const NotFound = lazy(() => import('../pages/NotFound'))
-const UploadVideo = lazy(() => import('../modules/video/pages/UploadVideo'))
+const Home = lazy(() => import("../pages/Home"));
+const DashboardOverview = lazy(
+  () => import("../pages/dashboard/DashboardOverview"),
+);
+const DashboardVideos = lazy(
+  () => import("../pages/dashboard/DashboardVideos"),
+);
+const DashboardAnalytics = lazy(
+  () => import("../pages/dashboard/DashboardAnalytics"),
+);
+const Login = lazy(() => import("../modules/auth/pages/Login"));
+const Register = lazy(() => import("../modules/auth/pages/Register"));
+const NotFound = lazy(() => import("../pages/NotFound"));
+const UploadVideo = lazy(() => import("../modules/video/pages/UploadVideo"));
 
 function ProtectedRoute({ children }: { children: JSX.Element }) {
-  const { user } = useAuth()
-  if (!user) return <Navigate to={ROUTES.LOGIN} replace />
-  return children
+  const { user, isLoading } = useAuth();
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        Loading...
+      </div>
+    );
+  if (!user) return <Navigate to={ROUTES.LOGIN} replace />;
+  return children;
 }
 
 export default function AppRoutes() {
@@ -27,11 +41,27 @@ export default function AppRoutes() {
         path={ROUTES.DASHBOARD}
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <DashboardOverview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/videos"
+        element={
+          <ProtectedRoute>
+            <DashboardVideos />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/analytics"
+        element={
+          <ProtectedRoute>
+            <DashboardAnalytics />
           </ProtectedRoute>
         }
       />
       <Route path="*" element={<NotFound />} />
     </Routes>
-  )
+  );
 }
